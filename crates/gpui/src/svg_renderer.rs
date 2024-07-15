@@ -36,13 +36,13 @@ impl SvgRenderer {
 
         let pixmap = self.render_pixmap(&bytes, SvgSize::Size(params.size))?;
 
-        // Convert the pixmap's pixels into an alpha mask.
-        let alpha_mask = pixmap
+        // Convert the pixmap's pixels into an rgba vector.
+        let rgba_values = pixmap
             .pixels()
             .iter()
-            .map(|p| p.alpha())
+            .map(|p| p.to_rgba8())
             .collect::<Vec<_>>();
-        Ok(Some(alpha_mask))
+        Ok(Some(rgba_values))
     }
 
     pub fn render_pixmap(&self, bytes: &[u8], size: SvgSize) -> Result<Pixmap, usvg::Error> {
